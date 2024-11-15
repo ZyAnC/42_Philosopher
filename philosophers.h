@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 20:23:59 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/14 18:59:25 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/15 12:07:34 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,25 @@ typedef struct philo
 	struct timeval	start_time;
 }					t_philo;
 
-int		ft_atoi(const char *str);
-int		ft_isdigit(char **av);
-long	get_microseconds(struct timeval start, struct timeval end);
-void	precise_usleep(long usec);
-long	get_time(t_philo *philo);
-int		philo_check(t_philo *philo);
-void	free_all(t_philo *pho, pthread_mutex_t *forks, pthread_t *threads);
-void	*philo_routine(void *arg);
-void	free_pho_fork(t_philo *pho, pthread_mutex_t *fork);
-void	listener(t_philo *pho);
-void	print_message(t_philo *philo, int i);
-int		check_malloc(t_philo *pho, pthread_mutex_t **forks,
-			pthread_mutex_t **self, pthread_mutex_t **print);
-int		all_done(t_philo *pho, int j);
-int		free_lock(t_philo *pho, pthread_mutex_t *fork,
-			pthread_mutex_t *self, pthread_mutex_t *print);
+int					ft_atoi(const char *str);
+int					ft_isdigit(char **av);
+long				get_microseconds(struct timeval start, struct timeval end);
+void				precise_usleep(long usec);
+long				get_time(t_philo *philo);
+int					philo_check(t_philo *philo);
+void				free_all(t_philo *pho, pthread_mutex_t *forks,
+						pthread_t *threads);
+void				*philo_routine(void *arg);
+void				free_pho_fork(t_philo *pho, pthread_mutex_t *fork);
+void				listener(t_philo *pho);
+void				print_message(t_philo *philo, int i);
+int					check_malloc(t_philo *pho, pthread_mutex_t **forks,
+						pthread_mutex_t **self, pthread_mutex_t **print);
+int					all_done(t_philo *pho);
+int					free_lock(t_philo *pho, pthread_mutex_t *fork,
+						pthread_mutex_t *self, pthread_mutex_t *print);
+int					after_full(t_philo *philo);
+int					get_dead(t_philo *pho, int i, int model);
+int					philo_even(t_philo *philo);
+int					philo_odd(t_philo *philo);
 #endif

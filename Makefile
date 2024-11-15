@@ -6,7 +6,7 @@ CFLAGS := -Wall -Wextra -Werror\
 
 
 
-SRCS :=philosophers.c tools.c check.c philo_running.c tools2.c
+SRCS :=philosophers.c tools.c check.c philo_running.c tools2.c philo_action.c
 OBJS := ${SRCS:.c=.o}
 
 

@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:19:02 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/14 18:57:30 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/15 12:07:15 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,6 @@ int	check_malloc(t_philo *pho, pthread_mutex_t **forks, pthread_mutex_t **self,
 	return (1);
 }
 
-int	all_done(t_philo *pho, int j)
-{
-	int	i;
-
-	i = 0;
-	while (i < pho[0].amount)
-	{
-		if (pho[i].eaten != pho[i].full_times || !pho[i].full_times)
-			return (0);
-		i++;
-	}
-	pthread_mutex_unlock(pho[j].self);
-	return (1);
-}
-
 int	free_lock(t_philo *pho, pthread_mutex_t *fork, pthread_mutex_t *self,
 		pthread_mutex_t *print)
 {
@@ -75,4 +60,10 @@ int	free_lock(t_philo *pho, pthread_mutex_t *fork, pthread_mutex_t *self,
 	free(self);
 	free(print);
 	return (0);
+}
+
+void	free_pho_fork(t_philo *pho, pthread_mutex_t *fork)
+{
+	free(pho);
+	free(fork);
 }

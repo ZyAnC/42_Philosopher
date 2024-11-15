@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 17:41:36 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/14 19:00:33 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/15 12:06:30 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ int	ft_isdigit(char **av)
 int	philo_check(t_philo *philo)
 {
 	pthread_mutex_lock(philo->self);
-	if (philo->is_dead || (philo->eaten == philo->full_times && philo->eaten))
+	if ((philo->eaten == philo->full_times && philo->eaten))
+	{
+		pthread_mutex_unlock(philo->self);
+		return (after_full(philo));
+	}
+	if (philo->is_dead)
 	{
 		pthread_mutex_unlock(philo->self);
 		return (0);
@@ -54,6 +59,8 @@ int	philo_check(t_philo *philo)
 	if (philo->full_times)
 		philo->eaten++;
 	if (philo->eaten == philo->full_times && philo->eaten)
+		return (after_full(philo));
+	if (get_dead(philo, 0, 2))
 		return (0);
 	print_message(philo, 2);
 	precise_usleep(philo->time_to_sleep * 1000);
@@ -64,15 +71,18 @@ void	check_listener(t_philo *pho, int i)
 {
 	long	timediff;
 
+	pthread_mutex_lock(pho[i].self);
 	timediff = get_time(&pho[i]) - pho[i].last_meal_time;
+	pthread_mutex_unlock(pho[i].self);
 	if (timediff >= pho[i].time_to_die)
 	{
+		pthread_mutex_lock(pho[i].self);
 		pho[i].is_dead = 1;
+		pthread_mutex_unlock(pho[i].self);
 		pthread_mutex_lock(pho[i].print);
 		printf("%ld %d died\n", get_time(&pho[i]), pho[i].id);
 		pthread_mutex_unlock(pho[i].print);
 	}
-	pthread_mutex_unlock(pho[i].self);
 }
 
 void	listener(t_philo *pho)
@@ -84,17 +94,16 @@ void	listener(t_philo *pho)
 	j = 0;
 	while (1)
 	{
-		pthread_mutex_lock(pho[i].self);
-		if (all_done(pho, i))
+		if (all_done(pho))
 			break ;
 		check_listener(pho, i);
-		if (pho[i].is_dead)
+		if (get_dead(pho, i, 0))
 		{
 			while (j < pho[0].amount)
 			{
-				pthread_mutex_lock(pho[j].self);
-				pho[j].is_dead = 1;
-				pthread_mutex_unlock(pho[j++].self);
+				if (j != i)
+					get_dead(pho, j, 1);
+				j++;
 			}
 			break ;
 		}
