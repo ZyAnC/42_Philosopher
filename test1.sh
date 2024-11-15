@@ -9,7 +9,7 @@ for ((i = 1; i <= total_tests; i++)); do
     echo "Running test $i / $total_tests"
 
     # 使用超时机制，限制程序最多运行 15 秒
-    output=$(timeout 15s ./philo 5 800 200 200)
+    output=$(timeout 15s ./philo 4 310 200 100)
 
     # 检查输出中是否包含 "died"
     if echo "$output" | grep -q "died"; then

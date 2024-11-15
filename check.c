@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 17:41:36 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/15 12:06:30 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/15 15:23:13 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	philo_check(t_philo *philo)
 		return (after_full(philo));
 	if (get_dead(philo, 0, 2))
 		return (0);
-	print_message(philo, 2);
+	print_message(philo,2);
 	precise_usleep(philo->time_to_sleep * 1000);
 	return (1);
 }

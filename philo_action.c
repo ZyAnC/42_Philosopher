@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 12:04:28 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/15 12:06:58 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:28:53 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static int	philo_eat(t_philo *philo)
 
 int	philo_even(t_philo *philo)
 {
+	precise_usleep(philo->time_to_eat * 500);
 	if ((philo->eaten == philo->full_times && philo->eaten))
 		return (after_full(philo));
 	pthread_mutex_lock(philo->self);
@@ -75,9 +76,7 @@ int	philo_even(t_philo *philo)
 		pthread_mutex_unlock(philo->self);
 		return (0);
 	}
-	if ((get_time(philo) - philo->last_meal_time) < (philo->time_to_die
-			- philo->time_to_eat - 1))
-		precise_usleep(500);
+
 	pthread_mutex_unlock(philo->self);
 	if (pthread_mutex_lock(philo->right_fork) == 0)
 	{
@@ -102,9 +101,7 @@ int	philo_odd(t_philo *philo)
 		pthread_mutex_unlock(philo->self);
 		return (0);
 	}
-	if ((get_time(philo) - philo->last_meal_time) < (philo->time_to_die
-			- philo->time_to_eat - 1))
-		precise_usleep(500);
+
 	pthread_mutex_unlock(philo->self);
 	if (pthread_mutex_lock(philo->left_fork) == 0)
 	{
